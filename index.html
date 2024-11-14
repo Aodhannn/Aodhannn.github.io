@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mwah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F1E4F3;
+            color: #D6D2D2;
+            overflow: hidden;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .heart {
+            font-size: 1.5rem;
+            color: #FE5D9F;
+            position: absolute;
+            opacity: 0.3;
+            animation: floatZoom 10s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatZoom {
+            0%, 100% {
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                transform: scale(1.1) translateY(-10px);
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .question-container {
+            position: absolute;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .question {
+            font-size: 2rem;
+            color: #FE5D9F;
+            padding: 20px;
+            border-radius: 15px;
+            background: #FFFFFF;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid #FE5D9F;
+            animation: fadeInScale 1s ease forwards;
+        }
+
+        .buttons {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #F686BD;
+            border: none;
+            color: #F1E4F3;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #FE5D9F;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .fade {
+            animation: fadeOut 1s forwards;
+        }
+
+        @media (max-width: 600px) {
+            .heart {
+                font-size: 1rem;
+            }
+
+            .question {
+                font-size: 1.5rem;
+            }
+
+            button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="heartsContainer"></div>
+
+    <div class="question-container" style="display: none;" id="questionContainer">
+        <div class="question" id="question">Can I take you out? 🎀</div>
+        <div class="buttons">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.style.display = 'flex'; 
+        }, 5000);
+
+        const question = document.getElementById('question');
+        const noBtn = document.getElementById('noBtn');
+
+        // The distance range for the "No" button to move (closer to the question)
+        const moveRange = 200; // Increase range for farther movement
+
+        noBtn.addEventListener('mouseover', function(event) {
+            let noBtn = event.target;
+
+            // Get the position of the question button
+            let questionRect = question.getBoundingClientRect();
+            let questionX = questionRect.left + questionRect.width / 2;
+            let questionY = questionRect.top + questionRect.height / 2;
+
+            // Calculate random positions farther from the cursor but near the question button
+            let randomX = questionX + (Math.random() - 0.5) * moveRange * 2;
+            let randomY = questionY + (Math.random() - 0.5) * moveRange * 2;
+
+            // Ensure the "No" button stays within the defined area around the question
+            randomX = Math.max(questionRect.left - moveRange, Math.min(randomX, questionRect.left + questionRect.width + moveRange));
+            randomY = Math.max(questionRect.top - moveRange, Math.min(randomY, questionRect.top + questionRect.height + moveRange));
+
+            // Ensure the "No" button stays within the screen limits
+            randomX = Math.max(0, Math.min(randomX, window.innerWidth - noBtn.offsetWidth));
+            randomY = Math.max(0, Math.min(randomY, window.innerHeight - noBtn.offsetHeight));
+
+            noBtn.style.transition = 'left 0.3s, top 0.3s'; // Faster movement
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        noBtn.addEventListener('click', function() {
+            alert('Nigga.');
+        });
+
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            alert('YAYAYAAYAYYAYYY THANK YOU SO SO MUCUCHHHH:DDDDDD I LOVE YOUOUUUUU');
+        });
+
+        function isOverlapping(x, y, elements) {
+            for (const el of elements) {
+                const rect = el.getBoundingClientRect();
+                const elX = rect.left;
+                const elY = rect.top;
+                const distance = Math.sqrt(Math.pow(elX - x, 2) + Math.pow(elY - y, 2));
+                if (distance < 50) return true;
+            }
+            return false;
+        }
+
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const hearts = [];
+            for (let i = 0; i < 50; i++) { 
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = 'I love you Haytam';
+                
+                let x, y;
+                let attempt = 0;
+                
+                do {
+                    x = Math.random() * (window.innerWidth - 100);
+                    y = Math.random() * (window.innerHeight - 100);
+                    attempt++;
+                } while (isOverlapping(x, y, hearts) && attempt < 100);
+                
+                heart.style.left = `${x}px`;
+                heart.style.top = `${y}px`;
+                
+                container.appendChild(heart);
+                hearts.push(heart);
+            }
+        }
+
+        createHearts();
+    </script>
+
+</body>
+</html>
