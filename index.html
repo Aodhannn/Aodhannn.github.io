@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moroccan Numbers Game</title>
+    <!-- Font Awesome for icons, although not directly used in current HTML -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts for 'Inter' typeface -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* General body styling for dark theme */
@@ -189,22 +191,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Firebase setup (necessary for all Canvas apps, even if not directly used for data storage in this simple game)
-            // Global variables are provided by the Canvas environment.
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-
-            // Initialize Firebase App (only if config is available)
-            let app;
-            if (Object.keys(firebaseConfig).length > 0) {
-                // We're not using Firestore or Auth in this specific game logic,
-                // but initializing Firebase is a required setup for all Canvas apps.
-                // In a real scenario needing Firebase, you'd import it like:
-                // import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-                // app = initializeApp(firebaseConfig);
-            } else {
-                console.warn("Firebase config not found. Running without Firebase services.");
-            }
+            // No Firebase initialization needed for GitHub Pages, as it's a static site
+            // and the game logic does not depend on Firebase services.
 
             // Game elements
             const questionDisplay = document.getElementById('questionDisplay');
@@ -217,16 +205,16 @@
             // Moroccan numbers data (English to Darija and vice-versa)
             const numbersData = [
                 { english: "zero", darija: "sifr", num: "0" },
-                { english: "one", darija: "waḥd", num: "1" },
+                { english: "one", darija: "wa7ed", num: "1" },
                 { english: "two", darija: "jouj", num: "2" },
                 { english: "three", darija: "tlata", num: "3" },
-                { english: "four", darija: "rbʿa", num: "4" },
-                { english: "five", darija: "khmsa", num: "5" },
-                { english: "six", darija: "stta", num: "6" },
-                { english: "seven", darija: "sbʿa", num: "7" },
-                { english: "eight", darija: "tmnya", num: "8" },
-                { english: "nine", darija: "tsʿoud", num: "9" },
-                { english: "ten", darija: "ʿachra", num: "10" }
+                { english: "four", darija: "reb3a", num: "4" },
+                { english: "five", darija: "khemsa", num: "5" },
+                { english: "six", darija: "seta", num: "6" },
+                { english: "seven", darija: "seb3a", num: "7" },
+                { english: "eight", darija: "tmenia", num: "8" },
+                { english: "nine", darija: "ts3od", num: "9" },
+                { english: "ten", darija: "3echra", num: "10" }
             ];
 
             let currentQuestion = null;
@@ -237,6 +225,7 @@
              * Starts or restarts the game, resetting the score and UI.
              */
             function startGame() {
+                console.log("Game started!"); // For debugging
                 score = 0;
                 scoreDisplay.textContent = `Score: ${score}`;
                 feedbackMessage.textContent = '';
