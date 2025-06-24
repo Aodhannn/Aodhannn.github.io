@@ -248,6 +248,60 @@
             margin-right: 0;
         }
 
+        /* Arabic Alphabet specific styles */
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Smaller grid items for letters */
+            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            direction: rtl; /* Ensure RTL for Arabic letters */
+        }
+
+        .alphabet-letter {
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-family: 'Cairo', sans-serif; /* Arabic font for the letters */
+            font-size: 2.5em;
+            color: var(--primary-purple);
+            font-weight: 700;
+            line-height: 1.2;
+            min-height: 100px;
+        }
+
+        .alphabet-letter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--card-shadow-dark);
+        }
+
+        .alphabet-letter:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px var(--card-shadow-light);
+        }
+
+        .alphabet-letter .transcription {
+            font-family: 'Inter', sans-serif; /* Latin font for transcription */
+            font-size: 0.5em; /* Smaller relative to the letter */
+            color: var(--dark-purple);
+            margin-top: 5px;
+            font-weight: 400;
+            direction: ltr; /* Ensure LTR for transcription */
+        }
+        body.darija-ar .alphabet-letter .transcription {
+            direction: ltr; /* Always LTR for transcription */
+        }
+
+
         /* Common Category Grid for Learn and Practice */
         .category-grid {
             display: grid;
@@ -503,6 +557,17 @@
             .learn-word-list {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
+            .alphabet-grid {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+                gap: 8px;
+            }
+            .alphabet-letter {
+                font-size: 2.2em;
+                min-height: 90px;
+            }
+            .alphabet-letter .transcription {
+                font-size: 0.45em;
+            }
             .category-grid {
                  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Adjusted min-width for categories */
                  gap: 18px;
@@ -578,6 +643,17 @@
                 padding: 12px 15px;
                 font-size: 0.95em;
             }
+            .alphabet-grid {
+                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+                gap: 6px;
+            }
+            .alphabet-letter {
+                font-size: 2em;
+                min-height: 80px;
+            }
+            .alphabet-letter .transcription {
+                font-size: 0.4em;
+            }
             .category-grid {
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Further adjust min-width */
                 gap: 15px;
@@ -628,9 +704,10 @@
                 right: 18px;
             }
             .language-toggle {
+                padding: 8px 12px;
+                font-size: 0.9em;
                 top: 15px;
                 right: 15px;
-                font-size: 0.9em;
             }
             body.darija-ar .language-toggle {
                 left: 15px;
@@ -674,6 +751,17 @@
             .learn-word-item {
                 font-size: 0.85em;
                 padding: 8px 10px;
+            }
+            .alphabet-grid {
+                grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+                gap: 5px;
+            }
+            .alphabet-letter {
+                font-size: 1.8em;
+                min-height: 70px;
+            }
+            .alphabet-letter .transcription {
+                font-size: 0.35em;
             }
             .category-grid {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Allow two smaller columns if possible */
@@ -756,6 +844,9 @@
         <div id="learnCategoriesPage" class="page-content learn-categories-page">
             <h1 data-en="Learn Darija Words" data-ar="تعلّم كلمات الدارجة">Learn Darija Words</h1>
             <div class="category-grid">
+                <button class="category-card" data-category-key="alphabet" data-en-text="Alphabet" data-ar-text="الأبجدية">
+                    <i class="fas fa-spell-check"></i> <span data-en="Alphabet" data-ar="الأبجدية">Alphabet</span>
+                </button>
                 <button class="category-card" data-category-key="numbers" data-en-text="Numbers" data-ar-text="الأرقام">
                     <i class="fas fa-calculator"></i> <span data-en="Numbers" data-ar="الأرقام">Numbers</span>
                 </button>
@@ -805,12 +896,14 @@
         </div>
 
         <div id="learnDefinitionsPage" class="page-content learn-definitions-page">
-            <!-- Content will be dynamically loaded here by JavaScript -->
-        </div>
+            </div>
 
         <div id="practiceCategoriesPage" class="page-content practice-categories-page">
             <h1 data-en="Practice Your Darija!" data-ar="تدرّب على الدارجة!">Practice Your Darija!</h1>
             <div class="category-grid">
+                <button class="category-card" data-game="alphabet" data-en-text="Alphabet" data-ar-text="الأبجدية">
+                    <i class="fas fa-spell-check"></i> <span data-en="Alphabet" data-ar="الأبجدية">Alphabet</span>
+                </button>
                 <button class="category-card" data-game="numbers" data-en-text="Numbers" data-ar-text="الأرقام">
                     <i class="fas fa-calculator"></i> <span data-en="Numbers" data-ar="الأرقام">Numbers</span>
                 </button>
@@ -890,6 +983,36 @@
             const scoreDisplay = document.getElementById('scoreDisplay');
 
             const gameData = {
+                alphabet: [
+                    { darija_ar: "أ", transcription: "Alif", audio: "arabic_alif.mp3" },
+                    { darija_ar: "ب", transcription: "Ba", audio: "arabic_ba.mp3" },
+                    { darija_ar: "ت", transcription: "Ta", audio: "arabic_ta.mp3" },
+                    { darija_ar: "ث", transcription: "Tha", audio: "arabic_tha.mp3" },
+                    { darija_ar: "ج", transcription: "Jim", audio: "arabic_jim.mp3" },
+                    { darija_ar: "ح", transcription: "Ha", audio: "arabic_ha.mp3" },
+                    { darija_ar: "خ", transcription: "Kha", audio: "arabic_kha.mp3" },
+                    { darija_ar: "د", transcription: "Dal", audio: "arabic_dal.mp3" },
+                    { darija_ar: "ذ", transcription: "Dhal", audio: "arabic_dhal.mp3" },
+                    { darija_ar: "ر", transcription: "Ra", audio: "arabic_ra.mp3" },
+                    { darija_ar: "ز", transcription: "Zayn", audio: "arabic_zayn.mp3" },
+                    { darija_ar: "س", transcription: "Sin", audio: "arabic_sin.mp3" },
+                    { darija_ar: "ش", transcription: "Shin", audio: "arabic_shin.mp3" },
+                    { darija_ar: "ص", transcription: "Sad", audio: "arabic_sad.mp3" },
+                    { darija_ar: "ض", transcription: "Dad", audio: "arabic_dad.mp3" },
+                    { darija_ar: "ط", transcription: "Ta", audio: "arabic_taa.mp3" },
+                    { darija_ar: "ظ", transcription: "Zha", audio: "arabic_zhaa.mp3" },
+                    { darija_ar: "ع", transcription: "Ayn", audio: "arabic_ayn.mp3" },
+                    { darija_ar: "غ", transcription: "Ghayn", audio: "arabic_ghayn.mp3" },
+                    { darija_ar: "ف", transcription: "Fa", audio: "arabic_fa.mp3" },
+                    { darija_ar: "ق", transcription: "Qaf", audio: "arabic_qaf.mp3" },
+                    { darija_ar: "ك", transcription: "Kaf", audio: "arabic_kaf.mp3" },
+                    { darija_ar: "ل", transcription: "Lam", audio: "arabic_lam.mp3" },
+                    { darija_ar: "م", transcription: "Mim", audio: "arabic_mim.mp3" },
+                    { darija_ar: "ن", transcription: "Nun", audio: "arabic_nun.mp3" },
+                    { darija_ar: "ه", transcription: "Ha", audio: "arabic_haa.mp3" },
+                    { darija_ar: "و", transcription: "Waw", audio: "arabic_waw.mp3" },
+                    { darija_ar: "ي", transcription: "Ya", audio: "arabic_ya.mp3" },
+                ],
                 numbers: [
                     { english: "zero", darija: "sifr", darija_ar: "صفر", num: "0" },
                     { english: "one", darija: "wa7ed", darija_ar: "واحد", num: "1" },
@@ -1089,6 +1212,12 @@
                 gamePage: gamePage
             };
 
+            // Function to play audio for alphabet letters
+            function playAudio(audioFileName) {
+                const audio = new Audio(`audio/${audioFileName}`); // Assuming audio files are in an 'audio' folder
+                audio.play().catch(e => console.error("Error playing audio:", e));
+            }
+
             // Function to set text content based on current language
             function setLocalizedText() {
                 // Set body direction based on language
@@ -1189,7 +1318,12 @@
                 if (currentPageId === 'learnCategoriesPage' || currentPageId === 'practiceCategoriesPage') {
                     targetPageId = 'mainHomePage';
                 } else if (currentPageId === 'learnDefinitionsPage') {
-                    targetPageId = 'learnCategoriesPage';
+                    if (currentCategoryKey === 'alphabet') {
+                        // If coming from alphabet learn, go back to learn categories
+                        targetPageId = 'learnCategoriesPage';
+                    } else {
+                        targetPageId = 'learnCategoriesPage';
+                    }
                     currentCategoryKey = null; // Clear category key when going back from definitions
                 } else if (currentPageId === 'gamePage') {
                     targetPageId = 'practiceCategoriesPage';
@@ -1226,28 +1360,63 @@
                     <h1 data-en="${categoryDisplayNameEn} Definitions" data-ar="تعاريف ${categoryDisplayNameAr}">
                         ${currentLanguage === 'en' ? `${categoryDisplayNameEn} Definitions` : `تعاريف ${categoryDisplayNameAr}`}
                     </h1>
-                    <div class="learn-word-list">
                 `;
 
-                categoryData.forEach(item => {
-                    let englishDisplay = item.english;
-                    if (categoryKey === 'numbers' && item.num) {
-                        englishDisplay = `${item.english} (${item.num})`; // Show number alongside English word
-                    }
-                    contentHtml += `
-                        <div class="learn-word-item" tabindex="0" role="listitem" aria-label="${item.english} in English, ${currentLanguage === 'en' ? item.darija : item.darija_ar} in Darija">
-                            <span class="english-word">${englishDisplay}</span>
-                            <span class="darija-word">${currentLanguage === 'en' ? item.darija : item.darija_ar}</span>
-                        </div>
-                    `;
-                });
-                contentHtml += `</div>`;
+                if (categoryKey === 'alphabet') {
+                    contentHtml += `<div class="alphabet-grid">`;
+                    categoryData.forEach(item => {
+                        contentHtml += `
+                            <div class="alphabet-letter" data-audio="${item.audio}" tabindex="0" role="button" aria-label="${item.transcription} in Arabic">
+                                ${item.darija_ar}
+                                <span class="transcription">${item.transcription}</span>
+                            </div>
+                        `;
+                    });
+                    contentHtml += `</div>`;
+                } else {
+                    contentHtml += `<div class="learn-word-list">`;
+                    categoryData.forEach(item => {
+                        let englishDisplay = item.english;
+                        if (categoryKey === 'numbers' && item.num) {
+                            englishDisplay = `${item.english} (${item.num})`; // Show number alongside English word
+                        }
+                        contentHtml += `
+                            <div class="learn-word-item" tabindex="0" role="listitem" aria-label="${item.english} in English, ${currentLanguage === 'en' ? item.darija : item.darija_ar} in Darija">
+                                <span class="english-word">${englishDisplay}</span>
+                                <span class="darija-word">${currentLanguage === 'en' ? item.darija : item.darija_ar}</span>
+                            </div>
+                        `;
+                    });
+                    contentHtml += `</div>`;
+                }
+                
                 definitionsContainer.innerHTML = contentHtml;
+
+                // Add event listeners for alphabet letters if on that page
+                if (categoryKey === 'alphabet') {
+                    document.querySelectorAll('.alphabet-letter').forEach(letterDiv => {
+                        letterDiv.addEventListener('click', () => {
+                            const audioFile = letterDiv.dataset.audio;
+                            if (audioFile) {
+                                playAudio(audioFile);
+                            }
+                        });
+                        letterDiv.addEventListener('keypress', (event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                                const audioFile = letterDiv.dataset.audio;
+                                if (audioFile) {
+                                    playAudio(audioFile);
+                                }
+                            }
+                        });
+                    });
+                }
             }
 
             // Retrieves the localized game title
             function getGameTitle(category, lang) {
                 const titles = {
+                    alphabet: { en: 'Alphabet Game!', ar: 'لعبة الأبجدية!' },
                     numbers: { en: 'Numbers Game!', ar: 'لعبة الأرقام!' },
                     days: { en: 'Days of the Week Game!', ar: 'لعبة أيام الأسبوع!' },
                     months: { en: 'Months Game!', ar: 'لعبة الشهور!' },
@@ -1285,39 +1454,57 @@
 
                 // Re-display the current question in the new language if a question is active
                 if (gameActive && currentQuestion) {
-                    const selectedItem = gameData[currentCategoryKey].find(item =>
-                        (item.english.toUpperCase() === currentQuestion.question && currentQuestion.type !== 'darija_arabic') ||
-                        (item.darija_ar === currentQuestion.question && currentQuestion.type === 'darija_arabic') ||
-                        (item.darija.toUpperCase() === currentQuestion.question && currentQuestion.type === 'english_word')
-                    );
+                    if (currentCategoryKey === 'alphabet') {
+                        const selectedItem = gameData.alphabet.find(item =>
+                            item.darija_ar === currentQuestion.question || item.transcription === currentQuestion.question
+                        );
 
-                    if (selectedItem) {
-                        const hasNum = selectedItem.hasOwnProperty('num');
-                        const questionType = currentQuestion.type;
-
-                        if (currentLanguage === 'en') {
-                            if (questionType === 'darija_latin' || questionType === 'darija_arabic') {
-                                questionDisplay.textContent = selectedItem.english.toUpperCase();
-                                currentQuestion.question = selectedItem.english.toUpperCase();
-                                currentQuestion.answer = selectedItem.darija.toLowerCase();
-                                currentQuestion.type = 'darija_latin';
-                            } else {
-                                questionDisplay.textContent = selectedItem.darija.toUpperCase();
-                                currentQuestion.question = selectedItem.darija.toUpperCase();
-                                currentQuestion.answer = hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase();
-                                currentQuestion.type = hasNum ? 'english_num' : 'english_word';
-                            }
-                        } else { // Arabic mode
-                            if (questionType === 'darija_latin' || questionType === 'darija_arabic') {
-                                questionDisplay.textContent = selectedItem.english.toUpperCase();
-                                currentQuestion.question = selectedItem.english.toUpperCase();
-                                currentQuestion.answer = selectedItem.darija_ar;
-                                currentQuestion.type = 'darija_arabic';
-                            } else {
+                        if (selectedItem) {
+                            if (currentQuestion.type === 'arabic_to_transcription') {
                                 questionDisplay.textContent = selectedItem.darija_ar;
                                 currentQuestion.question = selectedItem.darija_ar;
-                                currentQuestion.answer = hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase();
-                                currentQuestion.type = hasNum ? 'english_num' : 'english_word';
+                                currentQuestion.answer = selectedItem.transcription.toLowerCase();
+                            } else { // transcription_to_arabic
+                                questionDisplay.textContent = selectedItem.transcription.toUpperCase();
+                                currentQuestion.question = selectedItem.transcription.toUpperCase();
+                                currentQuestion.answer = selectedItem.darija_ar;
+                            }
+                        }
+                    } else { // Existing game categories
+                        const selectedItem = gameData[currentCategoryKey].find(item =>
+                            (item.english && item.english.toUpperCase() === currentQuestion.question) ||
+                            (item.darija_ar && item.darija_ar === currentQuestion.question) ||
+                            (item.darija && item.darija.toUpperCase() === currentQuestion.question)
+                        );
+
+                        if (selectedItem) {
+                            const hasNum = selectedItem.hasOwnProperty('num');
+                            const questionType = currentQuestion.type;
+
+                            if (currentLanguage === 'en') {
+                                if (questionType === 'darija_latin' || questionType === 'darija_arabic') {
+                                    questionDisplay.textContent = selectedItem.english.toUpperCase();
+                                    currentQuestion.question = selectedItem.english.toUpperCase();
+                                    currentQuestion.answer = selectedItem.darija.toLowerCase();
+                                    currentQuestion.type = 'darija_latin';
+                                } else {
+                                    questionDisplay.textContent = selectedItem.darija.toUpperCase();
+                                    currentQuestion.question = selectedItem.darija.toUpperCase();
+                                    currentQuestion.answer = hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase();
+                                    currentQuestion.type = hasNum ? 'english_num' : 'english_word';
+                                }
+                            } else { // Arabic mode
+                                if (questionType === 'darija_latin' || questionType === 'darija_arabic') {
+                                    questionDisplay.textContent = selectedItem.english.toUpperCase();
+                                    currentQuestion.question = selectedItem.english.toUpperCase();
+                                    currentQuestion.answer = selectedItem.darija_ar;
+                                    currentQuestion.type = 'darija_arabic';
+                                } else {
+                                    questionDisplay.textContent = selectedItem.darija_ar;
+                                    currentQuestion.question = selectedItem.darija_ar;
+                                    currentQuestion.answer = hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase();
+                                    currentQuestion.type = hasNum ? 'english_num' : 'english_word';
+                                }
                             }
                         }
                     }
@@ -1332,24 +1519,35 @@
                     let lastFeedbackIsCorrect = feedbackMessage.classList.contains('correct');
                     let originalAnswerItem = null;
                     if (currentQuestion && currentCategoryKey) {
-                        originalAnswerItem = gameData[currentCategoryKey].find(item =>
-                            cleanAnswer(item.english) === cleanAnswer(currentQuestion.answer) ||
-                            cleanAnswer(item.darija) === cleanAnswer(currentQuestion.answer) ||
-                            (item.num && cleanAnswer(item.num) === cleanAnswer(currentQuestion.answer)) ||
-                            item.darija_ar === currentQuestion.answer
-                        );
+                        if (currentCategoryKey === 'alphabet') {
+                             originalAnswerItem = gameData.alphabet.find(item =>
+                                 cleanAnswer(item.transcription) === cleanAnswer(currentQuestion.answer) ||
+                                 item.darija_ar === currentQuestion.answer
+                             );
+                        } else {
+                            originalAnswerItem = gameData[currentCategoryKey].find(item =>
+                                cleanAnswer(item.english) === cleanAnswer(currentQuestion.answer) ||
+                                cleanAnswer(item.darija) === cleanAnswer(currentQuestion.answer) ||
+                                (item.num && cleanAnswer(item.num) === cleanAnswer(currentQuestion.answer)) ||
+                                item.darija_ar === currentQuestion.answer
+                            );
+                        }
                     }
 
                     let translatedCorrectAnswer = '';
                     if (originalAnswerItem) {
-                        if (currentQuestion.type === 'darija_latin') {
-                            translatedCorrectAnswer = currentLanguage === 'en' ? originalAnswerItem.darija : originalAnswerItem.darija_ar;
-                        } else if (currentQuestion.type === 'darija_arabic') {
-                            translatedCorrectAnswer = currentLanguage === 'en' ? originalAnswerItem.darija : originalAnswerItem.darija_ar;
-                        } else if (currentQuestion.type === 'english_num') {
-                            translatedCorrectAnswer = currentLanguage === 'en' ? `${originalAnswerItem.english} (${originalAnswerItem.num})` : `${originalAnswerItem.darija_ar} (${originalAnswerItem.num})`;
-                        } else { // english_word
-                            translatedCorrectAnswer = currentLanguage === 'en' ? originalAnswerItem.english : originalAnswerItem.darija_ar;
+                        if (currentCategoryKey === 'alphabet') {
+                            translatedCorrectAnswer = currentQuestion.type === 'arabic_to_transcription' ? originalAnswerItem.transcription : originalAnswerItem.darija_ar;
+                        } else {
+                            if (currentQuestion.type === 'darija_latin') {
+                                translatedCorrectAnswer = currentLanguage === 'en' ? originalAnswerItem.darija : originalAnswerItem.darija_ar;
+                            } else if (currentQuestion.type === 'darija_arabic') {
+                                translatedCorrectAnswer = currentLanguage === 'en' ? originalAnswerItem.darija : originalAnswerItem.darija_ar;
+                            } else if (currentQuestion.type === 'english_num') {
+                                translatedCorrectAnswer = currentLanguage === 'en' ? `${originalAnswerItem.english} (${originalAnswerItem.num})` : `${originalAnswerItem.darija_ar} (${originalAnswerItem.num})`;
+                            } else { // english_word
+                                translatedCorrectAnswer = currentLanguage === 'en' ? originalAnswerItem.english : originalAnswerItem.darija_ar;
+                            }
                         }
                     } else {
                         translatedCorrectAnswer = currentQuestion.answer;
@@ -1425,43 +1623,64 @@
                     const randomIndex = Math.floor(Math.random() * currentCategoryData.length);
                     const selectedItem = currentCategoryData[randomIndex];
 
-                    const hasNum = selectedItem.hasOwnProperty('num');
-                    const questionChoice = (Math.random() < 0.5); // Randomly choose between English or Darija question
-
-                    if (currentLanguage === 'en') {
-                        if (questionChoice) { // Ask English, answer Darija (Latin script)
-                            questionDisplay.textContent = selectedItem.english.toUpperCase();
-                            currentQuestion = {
-                                question: selectedItem.english.toUpperCase(),
-                                answer: selectedItem.darija.toLowerCase(),
-                                type: 'darija_latin'
-                            };
-                        } else { // Ask Darija (Latin script), answer English/Number
-                            questionDisplay.textContent = selectedItem.darija.toUpperCase();
-                            currentQuestion = {
-                                question: selectedItem.darija.toUpperCase(),
-                                answer: hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase(),
-                                type: hasNum ? 'english_num' : 'english_word'
-                            };
-                        }
-                    } else { // Arabic mode: prioritize asking English, answering Arabic. Or ask Arabic and answer English.
-                        if (questionChoice) { // Ask English, answer Darija (Arabic script)
-                            questionDisplay.textContent = selectedItem.english.toUpperCase();
-                            currentQuestion = {
-                                question: selectedItem.english.toUpperCase(),
-                                answer: selectedItem.darija_ar,
-                                type: 'darija_arabic'
-                            };
-                        } else { // Ask Darija (Arabic script), answer English/Number
-                             questionDisplay.textContent = selectedItem.darija_ar;
+                    if (currentCategoryKey === 'alphabet') {
+                        const questionChoice = (Math.random() < 0.5); // Randomly choose between Arabic letter or transcription question
+                        if (questionChoice) { // Ask Arabic letter, answer Transcription
+                            questionDisplay.textContent = selectedItem.darija_ar;
                             currentQuestion = {
                                 question: selectedItem.darija_ar,
-                                answer: hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase(),
-                                type: hasNum ? 'english_num' : 'english_word'
+                                answer: selectedItem.transcription.toLowerCase(),
+                                type: 'arabic_to_transcription'
+                            };
+                            if (selectedItem.audio) {
+                                playAudio(selectedItem.audio); // Play sound when the letter is shown
+                            }
+                        } else { // Ask Transcription, answer Arabic letter
+                            questionDisplay.textContent = selectedItem.transcription.toUpperCase();
+                            currentQuestion = {
+                                question: selectedItem.transcription.toUpperCase(),
+                                answer: selectedItem.darija_ar,
+                                type: 'transcription_to_arabic'
                             };
                         }
-                    }
+                    } else { // Existing game categories logic
+                        const hasNum = selectedItem.hasOwnProperty('num');
+                        const questionChoice = (Math.random() < 0.5); // Randomly choose between English or Darija question
 
+                        if (currentLanguage === 'en') {
+                            if (questionChoice) { // Ask English, answer Darija (Latin script)
+                                questionDisplay.textContent = selectedItem.english.toUpperCase();
+                                currentQuestion = {
+                                    question: selectedItem.english.toUpperCase(),
+                                    answer: selectedItem.darija.toLowerCase(),
+                                    type: 'darija_latin'
+                                };
+                            } else { // Ask Darija (Latin script), answer English/Number
+                                questionDisplay.textContent = selectedItem.darija.toUpperCase();
+                                currentQuestion = {
+                                    question: selectedItem.darija.toUpperCase(),
+                                    answer: hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase(),
+                                    type: hasNum ? 'english_num' : 'english_word'
+                                };
+                            }
+                        } else { // Arabic mode: prioritize asking English, answering Arabic. Or ask Arabic and answer English.
+                            if (questionChoice) { // Ask English, answer Darija (Arabic script)
+                                questionDisplay.textContent = selectedItem.english.toUpperCase();
+                                currentQuestion = {
+                                    question: selectedItem.english.toUpperCase(),
+                                    answer: selectedItem.darija_ar,
+                                    type: 'darija_arabic'
+                                };
+                            } else { // Ask Darija (Arabic script), answer English/Number
+                                 questionDisplay.textContent = selectedItem.darija_ar;
+                                currentQuestion = {
+                                    question: selectedItem.darija_ar,
+                                    answer: hasNum ? selectedItem.num.toLowerCase() : selectedItem.english.toLowerCase(),
+                                    type: hasNum ? 'english_num' : 'english_word'
+                                };
+                            }
+                        }
+                    }
                     answerInput.value = '';
                     answerInput.focus();
 
@@ -1499,30 +1718,40 @@
                 let isCorrect = false;
                 let correctAnswerDisplay = "";
 
-                if (currentQuestion.type === 'darija_latin') {
-                    isCorrect = cleanAnswer(userAnswer) === cleanAnswer(currentQuestion.answer);
-                    correctAnswerDisplay = currentQuestion.answer;
-                } else if (currentQuestion.type === 'darija_arabic') {
-                    isCorrect = userAnswer === currentQuestion.answer; // Direct comparison for Arabic script
-                    correctAnswerDisplay = currentQuestion.answer;
-                } else if (currentQuestion.type === 'english_num' || currentQuestion.type === 'english_word') {
-                    // Find the original item to display the correct answer in context
-                    const originalAnswerItem = gameData[currentCategoryKey].find(item =>
-                        cleanAnswer(item.english) === cleanAnswer(currentQuestion.answer) ||
-                        (item.num && cleanAnswer(item.num) === cleanAnswer(currentQuestion.answer))
-                    );
+                if (currentCategoryKey === 'alphabet') {
+                    if (currentQuestion.type === 'arabic_to_transcription') {
+                        isCorrect = cleanAnswer(userAnswer) === cleanAnswer(currentQuestion.answer);
+                        correctAnswerDisplay = currentQuestion.answer;
+                    } else if (currentQuestion.type === 'transcription_to_arabic') {
+                        isCorrect = userAnswer === currentQuestion.answer; // Direct comparison for Arabic script
+                        correctAnswerDisplay = currentQuestion.answer;
+                    }
+                } else { // Existing game categories logic
+                    if (currentQuestion.type === 'darija_latin') {
+                        isCorrect = cleanAnswer(userAnswer) === cleanAnswer(currentQuestion.answer);
+                        correctAnswerDisplay = currentQuestion.answer;
+                    } else if (currentQuestion.type === 'darija_arabic') {
+                        isCorrect = userAnswer === currentQuestion.answer; // Direct comparison for Arabic script
+                        correctAnswerDisplay = currentQuestion.answer;
+                    } else if (currentQuestion.type === 'english_num' || currentQuestion.type === 'english_word') {
+                        // Find the original item to display the correct answer in context
+                        const originalAnswerItem = gameData[currentCategoryKey].find(item =>
+                            cleanAnswer(item.english) === cleanAnswer(currentQuestion.answer) ||
+                            (item.num && cleanAnswer(item.num) === cleanAnswer(currentQuestion.answer))
+                        );
 
-                    isCorrect = cleanAnswer(userAnswer) === cleanAnswer(currentQuestion.answer) ||
-                                (originalAnswerItem && cleanAnswer(userAnswer) === cleanAnswer(originalAnswerItem.english));
+                        isCorrect = cleanAnswer(userAnswer) === cleanAnswer(currentQuestion.answer) ||
+                                    (originalAnswerItem && cleanAnswer(userAnswer) === cleanAnswer(originalAnswerItem.english));
 
-                    if (currentQuestion.type === 'english_num' && originalAnswerItem) {
-                        correctAnswerDisplay = currentLanguage === 'en' ?
-                            `${originalAnswerItem.english} (${originalAnswerItem.num})` :
-                            `${originalAnswerItem.darija_ar} (${originalAnswerItem.num})`;
-                    } else if (originalAnswerItem) {
-                        correctAnswerDisplay = currentLanguage === 'en' ? originalAnswerItem.english : originalAnswerItem.darija_ar;
-                    } else {
-                        correctAnswerDisplay = currentQuestion.answer; // Fallback
+                        if (currentQuestion.type === 'english_num' && originalAnswerItem) {
+                            correctAnswerDisplay = currentLanguage === 'en' ?
+                                `${originalAnswerItem.english} (${originalAnswerItem.num})` :
+                                `${originalAnswerItem.darija_ar} (${originalAnswerItem.num})`;
+                        } else if (originalAnswerItem) {
+                            correctAnswerDisplay = currentLanguage === 'en' ? originalAnswerItem.english : originalAnswerItem.darija_ar;
+                        } else {
+                            correctAnswerDisplay = currentQuestion.answer; // Fallback
+                        }
                     }
                 }
 
@@ -1596,4 +1825,3 @@
     </script>
 </body>
 </html>
-
