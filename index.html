@@ -1,34 +1,707 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Services</title>
-  <link rel="stylesheet" href="styles.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,
+
+initial-scale=1.0">
+
+<title>Moroccan Numbers Game</title>
+
+<link rel="stylesheet"
+
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/
+
+css/all.min.css">
+
+<link
+
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&disp
+
+lay=swap" rel="stylesheet">
+
+<style>
+
+/* General body styling for dark theme */
+
+body {
+
+font-family: 'Inter', sans-serif;
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+min-height: 100vh;
+
+margin: 0;
+
+background: linear-gradient(135deg, #1a2a3a 0%, #2a3a4a
+
+100%); /* Dark blue-grey gradient */
+
+color: #e0e0e0; /* Light text for contrast */
+
+padding: 20px;
+
+box-sizing: border-box;
+
+}
+
+/* Game container styling for dark theme */
+
+.game-container {
+
+background-color: #2b3b4b; /* Slightly lighter dark
+
+background */
+
+padding: 30px;
+
+border-radius: 20px; /* Rounded corners */
+
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* More
+
+prominent shadow */
+
+text-align: center;
+
+width: 100%;
+
+max-width: 500px; /* Max width for larger screens */
+
+box-sizing: border-box;
+
+display: flex;
+
+flex-direction: column;
+
+gap: 20px;
+
+animation: fadeIn 0.8s ease-out;
+
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+
+to { opacity: 1; transform: translateY(0); }
+
+}
+
+/* Title styling for dark theme */
+
+h1 {
+
+color: #87ceeb; /* Sky blue for title */
+
+margin-bottom: 25px;
+
+font-size: 2.2em;
+
+text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+
+}
+
+/* Question display for dark theme */
+
+.question-display {
+
+font-size: 2.8em; /* Larger font for question */
+
+font-weight: 700;
+
+margin-bottom: 25px;
+
+color: #ffffff; /* White text for question */
+
+min-height: 50px; /* Ensure consistent height */
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+background-color: #3d5063; /* Darker background for
+
+question */
+
+padding: 20px;
+
+border-radius: 15px;
+
+box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+/* Input field styling for dark theme */
+
+.answer-input {
+
+width: calc(100% - 40px); /* Full width minus padding */
+
+padding: 15px 20px;
+
+margin-bottom: 20px;
+
+background-color: #3d5063; /* Darker input background */
+
+color: #ffffff; /* White text in input */
+
+border: 2px solid #5a748c; /* Lighter border */
+
+border-radius: 12px; /* Rounded corners */
+
+font-size: 1.2em;
+
+outline: none;
+
+transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+box-sizing: border-box;
+
+}
+
+.answer-input::placeholder {
+
+color: #a0a0a0; /* Lighter placeholder text */
+
+}
+  .answer-input:focus {
+
+border-color: #87ceeb; /* Sky blue on focus */
+
+box-shadow: 0 0 0 4px rgba(135, 206, 235, 0.3); /* Light
+
+glow on focus */
+
+background-color: #4a5d70; /* Slightly lighter on focus */
+
+}
+
+/* Button styling for dark theme */
+
+.submit-button, .start-button {
+
+background: linear-gradient(180deg, #4CAF50 0%, #3d8f41
+
+100%); /* Green gradient remains good */
+
+color: white;
+
+padding: 15px 25px;
+
+border: none;
+
+border-radius: 12px;
+
+font-size: 1.3em;
+
+font-weight: 700;
+
+cursor: pointer;
+
+transition: transform 0.2s ease, box-shadow 0.2s ease,
+
+background 0.3s ease;
+
+box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+
+width: 100%; /* Full width for buttons */
+
+}
+
+.submit-button:hover, .start-button:hover {
+
+transform: translateY(-3px);
+
+box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
+
+background: linear-gradient(180deg, #3d8f41 0%, #307a34
+
+100%);
+
+}
+
+.submit-button:active, .start-button:active {
+
+transform: translateY(0);
+
+box-shadow: 0 3px 10px rgba(76, 175, 80, 0.4);
+
+}
+
+/* Feedback message styling for dark theme */
+
+.feedback-message {
+
+margin-top: 15px;
+
+font-size: 1.2em;
+
+font-weight: 700;
+
+min-height: 30px; /* Ensure consistent height */
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+}
+
+.feedback-message.correct {
+  color: #72ef72; /* Lighter green for correct */
+
+}
+
+.feedback-message.incorrect {
+
+color: #ff6b6b; /* Lighter red for incorrect */
+
+}
+
+/* Score display for dark theme */
+
+.score-display {
+
+font-size: 1.3em;
+
+font-weight: 700;
+
+color: #c0c0c0; /* Light grey text */
+
+margin-top: 10px;
+
+background-color: #3d5063; /* Darker background */
+
+padding: 10px;
+
+border-radius: 10px;
+
+box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+
+}
+
+/* Responsive adjustments */
+
+@media (max-width: 600px) {
+
+.game-container {
+
+padding: 20px;
+
+margin: 10px; /* Small margin on very small screens */
+
+}
+
+h1 {
+
+font-size: 1.8em;
+
+}
+
+.question-display {
+
+font-size: 2.2em;
+
+padding: 15px;
+
+}
+
+.answer-input {
+
+font-size: 1.1em;
+
+padding: 12px 15px;
+
+}
+
+.submit-button, .start-button {
+
+font-size: 1.1em;
+
+padding: 12px 20px;
+
+}
+
+}
+
+</style>
+
 </head>
+
 <body>
-  <header class="hero">
-    <h1>Your Services</h1>
-    <p>Professional Solutions for Servers, Bots, and Websites</p>
-  </header>
+  <div class="game-container" id="gameContainer">
 
-  <nav class="navbar">
-    <a href="servers.html">Servers</a>
-    <a href="bots.html">Bots</a>
-    <a href="websites.html">Websites</a>
-  </nav>
+<h1>Learn Moroccan Numbers!</h1>
 
-  <main>
-    <section class="category">
-      <h2>Explore Our Services</h2>
-      <p>Click on any category above to learn more about what we offer.</p>
-    </section>
-  </main>
+<div class="score-display" id="scoreDisplay">Score: 0</div>
 
-  <footer>
-    <p>© 2024 Your Name. All rights reserved.</p>
-  </footer>
+<div class="question-display" id="questionDisplay"></div>
 
-  <script src="scripts.js"></script>
+<input type="text" id="answerInput" class="answer-input"
+
+placeholder="Your answer" disabled>
+
+<div class="feedback-message" id="feedbackMessage"></div>
+
+<button id="startButton" class="start-button">Start
+
+Game</button>
+
+<button id="submitButton" class="submit-button"
+
+style="display: none;">Submit Answer</button>
+
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+// Firebase setup (necessary for all Canvas apps, even if
+
+not directly used for data storage in this simple game)
+
+// Global variables are provided by the Canvas
+
+environment.
+
+const appId = typeof __app_id !== 'undefined' ? __app_id :
+
+'default-app-id';
+
+const firebaseConfig = typeof __firebase_config !==
+
+'undefined' ? JSON.parse(__firebase_config) : {};
+
+// Initialize Firebase App (only if config is available)
+
+let app;
+
+if (Object.keys(firebaseConfig).length > 0) {
+
+// We're not using Firestore or Auth in this specific
+
+game logic,
+
+// but initializing Firebase is a required setup for
+
+all Canvas apps.
+
+// In a real scenario needing Firebase, you'd import
+
+it like:
+
+// import { initializeApp } from
+
+"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+
+// app = initializeApp(firebaseConfig);
+
+} else {
+
+console.warn("Firebase config not found. Running
+
+without Firebase services.");
+
+}
+
+// Game elements
+
+const questionDisplay =
+
+document.getElementById('questionDisplay');
+
+const answerInput =
+
+document.getElementById('answerInput');
+
+const submitButton =
+
+document.getElementById('submitButton');
+  const startButton =
+
+document.getElementById('startButton');
+
+const feedbackMessage =
+
+document.getElementById('feedbackMessage');
+
+const scoreDisplay =
+
+document.getElementById('scoreDisplay');
+
+// Moroccan numbers data (English to Darija and
+
+vice-versa)
+
+const numbersData = [
+
+{ english: "zero", darija: "sifr", num: "0" },
+
+{ english: "one", darija: "waḥd", num: "1" },
+
+{ english: "two", darija: "jouj", num: "2" },
+
+{ english: "three", darija: "tlata", num: "3" },
+
+{ english: "four", darija: "rbʿa", num: "4" },
+
+{ english: "five", darija: "khmsa", num: "5" },
+
+{ english: "six", darija: "stta", num: "6" },
+
+{ english: "seven", darija: "sbʿa", num: "7" },
+
+{ english: "eight", darija: "tmnya", num: "8" },
+
+{ english: "nine", darija: "tsʿoud", num: "9" },
+
+{ english: "ten", darija: "ʿachra", num: "10" }
+
+];
+
+let currentQuestion = null;
+
+let score = 0;
+
+let gameActive = false;
+
+/**
+
+* Starts or restarts the game, resetting the score and
+
+UI.
+
+*/
+
+function startGame() {
+
+score = 0;
+
+scoreDisplay.textContent = `Score: ${score}`;
+
+feedbackMessage.textContent = '';
+
+feedbackMessage.className = 'feedback-message'; //
+
+Reset feedback class
+
+answerInput.value = '';
+
+answerInput.disabled = false;
+
+startButton.style.display = 'none';
+
+submitButton.style.display = 'block';
+
+answerInput.focus(); // Focus on the input field
+
+gameActive = true;
+
+generateQuestion();
+
+}
+
+/**
+
+* Generates a new question (either English to Darija or
+  Darija to English).
+
+*/
+
+function generateQuestion() {
+
+// Clear previous feedback
+
+feedbackMessage.textContent = '';
+
+feedbackMessage.className = 'feedback-message';
+
+// Randomly select a number pair
+
+const randomIndex = Math.floor(Math.random() *
+
+numbersData.length);
+
+const selectedNumber = numbersData[randomIndex];
+
+// Randomly decide question type: 0 = English to
+
+Darija, 1 = Darija to English
+
+const questionType = Math.floor(Math.random() * 2);
+
+if (questionType === 0) {
+
+// English word to Darija word
+
+questionDisplay.textContent =
+
+selectedNumber.english.toUpperCase();
+
+currentQuestion = {
+
+question:
+
+selectedNumber.english.toUpperCase(),
+
+answer: selectedNumber.darija,
+
+type: 'darija'
+
+};
+
+} else {
+
+// Darija word to English number (as a string to
+
+compare with input)
+
+questionDisplay.textContent =
+
+selectedNumber.darija.toUpperCase();
+
+currentQuestion = {
+
+question: selectedNumber.darija.toUpperCase(),
+
+answer: selectedNumber.num,
+
+type: 'english_num'
+
+};
+
+}
+
+answerInput.value = ''; // Clear input for the new
+
+question
+
+answerInput.focus(); // Keep focus on the input
+
+}
+
+/**
+
+* Checks the user's answer against the correct answer.
+
+*/
+
+function checkAnswer() {
+
+if (!gameActive) return; // Prevent checking before
+
+game starts
+  const userAnswer =
+
+answerInput.value.trim().toLowerCase();
+
+let isCorrect = false;
+
+if (currentQuestion.type === 'darija') {
+
+// Compare Darija answers (case-insensitive)
+
+isCorrect = userAnswer ===
+
+currentQuestion.answer.toLowerCase();
+
+} else {
+
+// Compare English number answers (might be '2' vs
+
+'two', etc.)
+
+// Allow both numeral and word answer for English
+
+number questions
+
+const correctEnglishWord = numbersData.find(d =>
+
+d.num === currentQuestion.answer).english.toLowerCase();
+
+isCorrect = (userAnswer ===
+
+currentQuestion.answer.toLowerCase() || userAnswer ===
+
+correctEnglishWord);
+
+}
+
+if (isCorrect) {
+
+feedbackMessage.textContent = 'Correct! 🎉';
+
+feedbackMessage.classList.add('correct');
+
+score++;
+
+} else {
+
+feedbackMessage.textContent = `Incorrect. The
+
+correct answer was "${currentQuestion.answer}".`;
+
+feedbackMessage.classList.add('incorrect');
+
+score = Math.max(0, score - 1); // Decrease score,
+
+but not below zero
+
+}
+
+scoreDisplay.textContent = `Score: ${score}`;
+
+// Briefly show feedback, then generate next question
+
+answerInput.disabled = true; // Disable input while
+
+showing feedback
+
+setTimeout(() => {
+
+answerInput.disabled = false; // Re-enable input
+
+generateQuestion();
+
+}, 1500); // 1.5 seconds delay
+
+}
+
+// Event Listeners
+
+startButton.addEventListener('click', startGame);
+
+submitButton.addEventListener('click', checkAnswer);
+
+// Allow submitting with Enter key
+                          answerInput.addEventListener('keypress', (event) => {
+
+if (event.key === 'Enter' && gameActive &&
+
+!answerInput.disabled) {
+
+checkAnswer();
+
+}
+
+});
+
+});
+
+</script>
+
 </body>
+
 </html>
